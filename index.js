@@ -358,12 +358,21 @@ let kq_late = []
 let kq_early = []
 let kq_worktime = []
 function askAll() {
-    inquire('2020-12-24', '2021-1-11', 'john', false,
-    ()=> inquire('2020-12-28', '2021-1-26', 'S2008001', false,
-    ()=> inquire('2020-12-24', '2021-1-6', 'ANNE', false,
-    ()=> inquire('2020-12-25', '2021-1-08', 'LEO MY CHEN', false,
-    ()=> inquire('2021-01-17', '2021-1-27', 'S0203002', false,
-
+    inquire(
+    '2020-12-24', '2021-1-11', 'JACK C ZHANG', false,
+    // ()=> inquire('2020-12-28', '2021-1-26', 'S2008001', false,
+    // ()=> inquire('2020-12-24', '2021-1-6', 'ANNE', false,
+    // ()=> inquire('2020-12-25', '2021-1-08', 'LEO MY CHEN', false,
+    // ()=> inquire('2021-01-17', '2021-1-27', 'S0203002', false,
+    ()=> inquire('2020-12-24', '2021-1-6', 'TINA MJ PANG', false,
+    ()=> inquire('2020-12-25', '2021-1-08', 'JAMES SJ YU', false,
+    ()=> inquire('2020-12-17', '2020-12-27', 'ROMY QI', false,
+    ()=> inquire('2021-01-17', '2021-1-27', 'S2009001', false,
+    ()=> inquire('2021-01-17', '2021-1-27', 'GINA YANG', false,
+    ()=> inquire('2020-12-24', '2021-1-11', 'LEO MY CHEN', false,
+    ()=> inquire('2021-01-17', '2021-1-27', 'RACHAEL YUAN', false,
+    ()=> inquire('2021-01-4', '2021-1-14', 'DANKING LI', false,
+    
     //自己部门所有人
     
     function() {
@@ -404,19 +413,19 @@ function askAll() {
                 let clock2 = date3.toLocaleTimeString()
         
                 let date4 = new Date('','','',16,50,0)
-                let after = date4.toTimeString()
+                let after = date4.toLocaleTimeString()
 
                 if(clock2 < after){ 
                     //将最后一次打卡标记为早退                 
-                    kq_list[frequency].push("早退");
-                    kq_early.push( kq_list[frequency])
+                    kq_list[i-frequency].push("早退");
+                    kq_early.push( kq_list[i-frequency])
                 }
 
 
                 //4. 直接获取第一次和最后一次打卡时间差小于9小时
                 // let duration = (date3 - date1)/(1000 * 60 * 60)
                 //(date3 - date1) < 1000 * 60 * 60 * 9 + 59 * 1000
-                if(date3 - date1 < 1000 * 60 * 60 * 9 + 59 * 1000){
+                if(date3 - date1 < 1000 * 60 * 60 * 9 - 59 * 1000){
                     kq_list[i].push("工时不足");
                     kq_list[i-1].push("工时不足");
                     kq_worktime.push( kq_list[i])
@@ -433,9 +442,9 @@ function askAll() {
                 let period = (daycur1-daycur2)/(1000 * 60 * 60 * 24);
                 // console.log(period)
                
-                if(period < 1){
+                if(period+0.3 < 1){
                 }else if(period>2){
-                    for(let n=1;n<period;n++){
+                    for(let n=1;n<period-0.3;n++){
                         daycur2.setDate(daycur2.getDate()+1)
                         // console.log(daycur2)
                         let sun = daycur2.getDay()
@@ -485,9 +494,9 @@ function askAll() {
 
     //缺勤人员
     if(kq_queqin.length){
-        console.log('\x1B[31m                      缺勤人员名单 \x1B[0m')
+        console.log('\x1B[31m                      缺勤/请假/假期人员名单 \x1B[0m')
         console.log(`\x1B[36m—————————————————————————————————\x1B[0m`)
-        console.log(`\x1B[36mDepartment    ID           name                缺勤时间  \x1B[0m`)
+        console.log(`\x1B[36mDepartment    ID           name                缺勤/请假/假期时间  \x1B[0m`)
         console.log(`\x1B[36m—————————————————————————————————\x1B[0m`)
         for(let q = 0;q<kq_queqin.length;q++){
             console.log(kq_queqin[q][0],' ',kq_queqin[q][1],' ',kq_queqin[q][2],' ',kq_queqin[q][3])
@@ -559,7 +568,7 @@ function askAll() {
     // console.log(kq_list)
     console.log("All done.") 
          
-    } )))));
+    } ))))) ))));
     
 }
 
