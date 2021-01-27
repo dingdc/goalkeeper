@@ -19,13 +19,15 @@
     没有打卡 ------- 查看打卡时间，后一天是否为前一天加1，
                           若是则不做处理，不是则对缺失时间进行判断，
                               缺失时间若为星期天，不做处理，缺失时间不是星期天，把缺失时间添加到缺勤数组kq_queqin
-
+    buy : 只能判断未打卡是不是星期天，不能判断假期
    
 let kq_queqin = []     缺勤
 let kq_once = []       打卡一次
 let kq_late = []       迟到
 let kq_early = []      早退
 let kq_worktime = []   工時不足
+
+
 
 # How to use
 git clone https://github.com/alex632/kq.git
