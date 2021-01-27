@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>moment的使用</title>
+    <script src="moment.js"></script>
+</head>
+<body>
+<script>
+    //设定moment区域为中国
+    moment.locale('zh-cn');
+    //取当天时间，以YYYY-MM-DD HH:mm:ss形式显示
+    var now = moment().format("YYYY-MM-DD HH:mm:ss");
+    console.log(now);
+    //任意时间戳格式化，以YYYY-MM-DD HH:mm:ss形式显示
+    var t1 = moment(1411641720000).format("YYYY-MM-DD HH:mm:ss");
+    console.log(t1);
+    //获取前一天日期，格式以YYYY-MM-DD形式显示
+    var t11 = moment().day(0).format('YYYY-MM-DD');
+    console.log(t11);
+
+    //获取本周五日期，格式以YYYY-MM-DD形式显示
+    var t12 = moment().weekday(5).format('YYYY-MM-DD');
+    console.log(t12);
+
+    //获取上周五日期，格式以YYYY-MM-DD形式显示
+    var t13 = moment().weekday(-3).format('YYYY-MM-DD');
+    console.log(t13);
+
+    //获取当前年份、月份、日期
+    var t14 = moment().year();
+    var t15 = moment().month();//此处月份从0开始，当前月要+1
+    var t16 = moment().date();
+    console.log(`${t14}-${t15+1}-${t16}`);
+
+    //例如：我想获取去年今天的完整日期，如：今天是2018-7-23，我要输出的是2017-7-23
+    console.log(`${t14-1}-${t15+1}-${t16}`);
+
+    //获取上个月今天的日期，格式以YYYY-MM-DD显示
+    var t18 = moment().subtract(1, 'months').format('YYYY-MM-DD');
+    console.log(t18);
+
+    //获取上个月日期，格式以YYYY-MM显示
+    var t19 = moment().subtract(1, 'months').format('YYYY-MM');
+    console.log(t19);
+
+    //获取前一天日期，格式以YYYY-MM-DD显示
+    var t20 = moment().subtract(1, 'days').format('YYYY-MM-DD');
+    console.log(t20);
+
+    //获取去年今天的日期，格式以YYYY-MM-DD显示，即简便的获取去年今天日期的方法
+    var t21 = moment().subtract(1, 'year').format('YYYY-MM-DD');
+    console.log(t21);
+
+    //获取两个小时之后的时间
+    var t22 = moment().add(2,'hours').format('YYYY-MM-DD HH:mm:ss');
+    console.log(t22);
+
+    //例如:今天2018-7-23，获取到的时间是2018-7-18
+    var t23 = moment().subtract(5, 'days').format('YYYY-MM-DD');
+    console.log(t23);
+
+</script>
+
+</body>
+</html>
