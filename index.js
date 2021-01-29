@@ -1,8 +1,6 @@
 //
 // 自动化截取刷卡资料
 //
-
-
 'use strict';	// Whole-script strict mode applied.
 
 const http = require('http');   // NOTE: import default module
@@ -340,18 +338,16 @@ function parseKQ(html) {
             // console.log(kq_list)
             console.log(`  ${m[1]}  ${m[2]}  ${m[3]} ${m[4]}`);
 
-
             html = html.substr(rex.lastIndex);    
         } else {
 			break;
         }   
     }
-
-    
+  
     return {curPage: curPage, numPages: numPages};
-     
-    
+       
 }
+
 let kq_queqin = []
 let kq_once = []
 let kq_late = []
@@ -360,18 +356,19 @@ let kq_worktime = []
 function askAll() {
     inquire(
     '2020-12-24', '2021-1-11', 'JACK C ZHANG', false,
-    // ()=> inquire('2020-12-28', '2021-1-26', 'S2008001', false,
-    // ()=> inquire('2020-12-24', '2021-1-6', 'ANNE', false,
-    // ()=> inquire('2020-12-25', '2021-1-08', 'LEO MY CHEN', false,
-    // ()=> inquire('2021-01-17', '2021-1-27', 'S0203002', false,
-    ()=> inquire('2020-12-24', '2021-1-6', 'TINA MJ PANG', false,
-    ()=> inquire('2020-12-25', '2021-1-08', 'JAMES SJ YU', false,
+    ()=> inquire('2021-1-19', '2021-1-29', 'TINA MJ PANG', false,
+    ()=> inquire('2021-1-19', '2021-1-29', 'JAMES SJ YU', false,
     ()=> inquire('2020-12-17', '2020-12-27', 'ROMY QI', false,
-    ()=> inquire('2021-01-17', '2021-1-27', 'S2009001', false,
-    ()=> inquire('2021-01-17', '2021-1-27', 'GINA YANG', false,
-    ()=> inquire('2020-12-24', '2021-1-11', 'LEO MY CHEN', false,
-    ()=> inquire('2021-01-17', '2021-1-27', 'RACHAEL YUAN', false,
+    ()=> inquire('2021-01-19', '2021-1-29', 'S2009001', false,
+    ()=> inquire('2021-01-17', '2021-1-29', 'GINA YANG', false,
+    ()=> inquire('2021-1-19', '2021-1-29', 'LEO MY CHEN', false,
+    ()=> inquire('2020-12-24', '2021-1-11', 'RACHAEL YUAN', false,
     ()=> inquire('2021-01-4', '2021-1-14', 'DANKING LI', false,
+    ()=> inquire('2021-01-4', '2021-1-14', 'Eason Lu', false,
+    ()=> inquire('2021-01-4', '2021-1-14', 'ZORA ZHUANG', false,
+    ()=> inquire('2021-01-4', '2021-1-14', 'WILLIAM YX LIU', false,
+    ()=> inquire('2021-01-4', '2021-1-14', 'THOMAS PAN', false,
+
     
     //自己部门所有人
     
@@ -423,8 +420,6 @@ function askAll() {
 
 
                 //4. 直接获取第一次和最后一次打卡时间差小于9小时
-                // let duration = (date3 - date1)/(1000 * 60 * 60)
-                //(date3 - date1) < 1000 * 60 * 60 * 9 + 59 * 1000
                 if(date3 - date1 < 1000 * 60 * 60 * 9 - 59 * 1000){
                     kq_list[i].push("工时不足");
                     kq_list[i-1].push("工时不足");
@@ -434,7 +429,7 @@ function askAll() {
           
             }
             //5. 判断请假（非星期天没有打卡）  bug：只考虑了工作日和非工作日，没有考虑假期
-            //如果名字和后一天相同，日期不同，判断下一天是不是=上一天加1，是则正常，不是则判断是不是星期天
+            //如果名字和后一天相同，日期不同，判断下一天是不是=上一天加1，是则正常，不是则判断缺失时间是不是星期天
            if(kq_list[i][2]===kq_list[i+1][2] && kq_list[i][3].slice(0,7)!=kq_list[i+1][3].slice(0,7)){
                 //判断后一天是不是等于前一天加1
                 let daycur1 =  new Date(kq_list[i][3]) ;
@@ -444,39 +439,33 @@ function askAll() {
                
                 if(period+0.3 < 1){
                 }else if(period>2){
-                    for(let n=1;n<period-0.3;n++){
+                    for(let n=1 ; n < period-0.3 ; n++){
                         daycur2.setDate(daycur2.getDate()+1)
                         // console.log(daycur2)
                         let sun = daycur2.getDay()
+                        // let holiday = daycur2.toDateString()
                         // 缺失日期是不是周六周日
                         if(sun===6||sun===0){
                             // console.log('缺失时间为星期天')
                         }else{
-        
                             let kq_department = kq_list[i][0];
                             let kq_id = kq_list[i][1];
                             let kq_name = kq_list[i][2];
                             //格式化日期为"2021-12-20"
-                            function d(date){
+                            function format_date(date){
                                 return date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate();
                             }
-                            let kq_date = d(daycur2);
+                            let kq_date = format_date(daycur2);
 
-                            let queqin = new Array(kq_department,kq_id,kq_name,kq_date,"缺勤/请假/假期")
+                            let queqin = new Array(kq_department,kq_id,kq_name,kq_date,"缺勤/请假/节日")
                             kq_queqin.push(queqin);
                         }
-                    }
-                    
+                    }                  
                 }
-
-
        }
-
-
             kq_cur = []
             
         }
-    
     }
     //遍历kq_list
     // for(let i=0; i < kq_list.length-1; i++){
@@ -490,16 +479,22 @@ function askAll() {
     //     }  
     // }
     console.log(' ')
-    console.log(' ')
+    
 
     //缺勤人员
     if(kq_queqin.length){
         console.log('\x1B[31m                      缺勤/请假/假期人员名单 \x1B[0m')
         console.log(`\x1B[36m—————————————————————————————————\x1B[0m`)
-        console.log(`\x1B[36mDepartment    ID           name                缺勤/请假/假期时间  \x1B[0m`)
+        console.log(`\x1B[36mDepartment    ID           name                缺勤/请假/节日时间  \x1B[0m`)
         console.log(`\x1B[36m—————————————————————————————————\x1B[0m`)
         for(let q = 0;q<kq_queqin.length;q++){
-            console.log(kq_queqin[q][0],' ',kq_queqin[q][1],' ',kq_queqin[q][2],' ',kq_queqin[q][3])
+            //节日数组
+            let kq_holiday =["1/1","2/11","2/12","2/13","2/14","2/15","2/16","2/17","5/1","5/2","5/3","5/4","5/5","10/1","10/2","10/3","10/4","10/5","10/6","10/7"]
+            if(!kq_holiday.includes(kq_queqin[q][3].slice(5))){
+                console.log(kq_queqin[q][0],' ',kq_queqin[q][1],' ',kq_queqin[q][2],'      ',kq_queqin[q][3])
+                // console.log(kq_queqin[q][3])
+            }
+            
         }
         console.log(`\x1B[36m—————————————————————————————————\x1B[0m`)
         console.log(' ')
@@ -552,23 +547,20 @@ function askAll() {
 
     //迟到
     if(kq_late.length){
-        console.log('\x1B[31m                      迟到的人员名单 \x1B[0m')
+        console.log('\x1B[31m                      迟到人员名单 \x1B[0m')
         console.log(`\x1B[36m—————————————————————————————————\x1B[0m`)
         console.log(`\x1B[36mDepartment    ID           name                迟到时间  \x1B[0m`)
         console.log(`\x1B[36m—————————————————————————————————\x1B[0m`)
         for(let i = 0;i<kq_late.length;i++){
             console.log(kq_late[i][0],' ',kq_late[i][1],' ',kq_late[i][2],' ',kq_late[i][3])
         }
-        console.log(`\x1B[36m—————————————————————————————————\x1B[0m`)
-        console.log(' ')
-        console.log(' ')
-       
+        console.log(`\x1B[36m—————————————————————————————————\x1B[0m`)   
     }
-    // console.log(kq_queqin);
+
     // console.log(kq_list)
     console.log("All done.") 
          
-    } ))))) ))));
+    } ))))) ))))))));
     
 }
 
